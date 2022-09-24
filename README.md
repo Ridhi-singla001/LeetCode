@@ -1,2 +1,2 @@
 # LeetCode
-##https://leetcode.com/ridhisingla001/
+https://leetcode.com/ridhisingla001/
