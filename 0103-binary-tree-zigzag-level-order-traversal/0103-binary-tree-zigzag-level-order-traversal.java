@@ -21,20 +21,20 @@ class Solution {
     public List<List<Integer>> sol(TreeNode root){
         int level=0;
         List<List<Integer>> ans=new ArrayList();
-        LinkedList<TreeNode> q=new LinkedList();
-        q.addLast(root);
+        Queue<TreeNode> q=new LinkedList<>();
+        q.add(root);
         while(!q.isEmpty()){
             int i=0;
             int size=q.size();
             List<Integer> curlevel=new ArrayList();
             while(i<size){
-                TreeNode temp=q.removeFirst();
+                TreeNode temp=q.remove();
                 curlevel.add(temp.val);
                 if(temp.left!=null){
-                    q.addLast(temp.left);
+                    q.add(temp.left);
                 }
                 if(temp.right!=null){
-                    q.addLast(temp.right);
+                    q.add(temp.right);
                 }
                 i++;
                 
