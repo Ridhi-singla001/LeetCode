@@ -1,26 +1,26 @@
 class Solution {
     public int evalRPN(String[] tokens) {
-        int n = tokens.length;
-        Stack<Integer> st = new Stack<>();
-
-        for(String s : tokens) {
-            if(s.equals("+")) {
-                st.push(st.pop() + st.pop());
-            }
-            else if (s.equals("-")) {
-                st.push(-st.pop() + st.pop());
-            }
-            else if(s.equals("*")) {
-                st.push( st.pop() * st.pop());
-            }
-            else if(s.equals("/")) {
-                st.push(( (int)(1D/st.pop() * st.pop())));
-            }
-            else {
-                int num = Integer.valueOf(s);
-                st.push(num);
+        Stack<Integer> stack=new Stack();
+        String oprtr="+-*/";
+        for(String s:tokens)
+        {
+            if(oprtr.contains(s)&&!stack.isEmpty()){
+              int op1=stack.pop();
+              int op2=stack.pop();
+              int ans=help(op2,s,op1);
+              stack.push(ans);
+            }else{
+                stack.push(Integer.parseInt(s));
             }
         }
-        return st.pop();
+        return stack.pop();
+
+    }
+    public int help(int op2,String s,int op1)
+    {
+        if(s.equals("+"))return op2+op1;
+        else if(s.equals("-"))return op2-op1;
+        else if(s.equals("/"))return op2/op1;
+        return op2*op1;
     }
 }
