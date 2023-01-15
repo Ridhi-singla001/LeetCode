@@ -1,5 +1,5 @@
 class Solution {
-      public int peopleAwareOfSecret(int n, int delay, int forget) {
+   public int peopleAwareOfSecret(int n, int delay, int forget) {
         long dp[] = new long[n + 1], mod = (long)1e9 + 7, share = 0, res = 0;
         dp[1] = 1;
         for (int i = 2; i <= n; ++i)
