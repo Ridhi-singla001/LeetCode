@@ -1,28 +1,24 @@
 class Solution {
-    public int findMaximizedCapital(int numberOfProjects, int initialCapital, int[] profits, int[] capital) {
-    int n = profits.length;
-    PriorityQueue<Integer> minCapitalHeap = new PriorityQueue<>(n, (i1, i2) -> capital[i1] - capital[i2]);
-    PriorityQueue<Integer> maxProfitHeap = new PriorityQueue<>(n, (i1, i2) -> profits[i2] - profits[i1]);
-
-    // insert all project capitals to a min-heap
-    for (int i = 0; i < n; i++)
-      minCapitalHeap.offer(i);
-
-    // let's try to find a total of 'numberOfProjects' best projects
-    int availableCapital = initialCapital;
-    for (int i = 0; i < numberOfProjects; i++) {
-      // find all projects that can be selected within the available capital and insert them in a max-heap
-      while (!minCapitalHeap.isEmpty() && capital[minCapitalHeap.peek()] <= availableCapital)
-        maxProfitHeap.add(minCapitalHeap.poll());
-
-      // terminate if we are not able to find any project that can be completed within the available capital
-      if (maxProfitHeap.isEmpty())
-        break;
-
-      // select the project with the maximum profit
-      availableCapital += profits[maxProfitHeap.poll()];
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+        int[][] projects = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            projects[i][0] = capital[i];
+            projects[i][1] = profits[i];
+        }
+        Arrays.sort(projects, (a, b) -> Integer.compare(a[0], b[0]));
+        int i = 0;
+        PriorityQueue<Integer> maximizeCapital = new PriorityQueue<>(Collections.reverseOrder());
+        while (k-- > 0) {
+            while (i < n && projects[i][0] <= w) {
+                maximizeCapital.offer(projects[i][1]);
+                i++;
+            }
+            if (maximizeCapital.isEmpty()) {
+                break;
+            }
+            w += maximizeCapital.poll();
+        }
+        return w;
     }
-
-    return availableCapital;
-  }
 }
