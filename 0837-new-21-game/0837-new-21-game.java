@@ -1,13 +1,25 @@
 class Solution {
-    public double new21Game(int N, int K, int W) {
-        if (K == 0 || N >= K + W) return 1;
-        double dp[] = new double[N + 1],  Wsum = 1, res = 0;
-        dp[0] = 1;
-        for (int i = 1; i <= N; ++i) {
-            dp[i] = Wsum / W;
-            if (i < K) Wsum += dp[i]; else res += dp[i];
-            if (i - W >= 0) Wsum -= dp[i - W];
+    public double new21Game(int N, int K, int maxPts) {
+        // Corner cases
+        if (K == 0) return 1.0;
+        if (N >= K - 1 + maxPts) return 1.0;
+
+        // dp[i] is the probability of getting point i.
+        double[] dp = new double[N + 1];
+        Arrays.fill(dp, 0.0);
+
+        double probability = 0.0; // dp of N or less points.
+        double windowSum = 1.0; // Sliding required window sum
+        dp[0] = 1.0;
+        for (int i = 1; i <= N; i++) {
+            dp[i] = windowSum / maxPts;
+
+            if (i < K) windowSum += dp[i];
+            else probability += dp[i];
+
+            if (i >= maxPts) windowSum -= dp[i - maxPts];
         }
-        return res;
+
+        return probability;
     }
 }
