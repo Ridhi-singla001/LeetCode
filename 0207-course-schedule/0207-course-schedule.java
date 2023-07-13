@@ -1,17 +1,40 @@
 class Solution {
-     public boolean canFinish(int n, int[][] prerequisites) {
-        ArrayList<Integer>[] G = new ArrayList[n];
-        int[] degree = new int[n];
-        ArrayList<Integer> bfs = new ArrayList();
-        for (int i = 0; i < n; ++i) G[i] = new ArrayList<Integer>();
-        for (int[] e : prerequisites) {
-            G[e[1]].add(e[0]);
-            degree[e[0]]++;
+    public boolean canFinish(int n, int[][] prerequisites) {
+        List<Integer>[] adj = new List[n];
+        int[] indegree = new int[n];
+        List<Integer> ans = new ArrayList<>();
+
+        for (int[] pair : prerequisites) {
+            int course = pair[0];
+            int prerequisite = pair[1];
+            if (adj[prerequisite] == null) {
+                adj[prerequisite] = new ArrayList<>();
+            }
+            adj[prerequisite].add(course);
+            indegree[course]++;
         }
-        for (int i = 0; i < n; ++i) if (degree[i] == 0) bfs.add(i);
-        for (int i = 0; i < bfs.size(); ++i)
-            for (int j: G[bfs.get(i)])
-                if (--degree[j] == 0) bfs.add(j);
-        return bfs.size() == n;
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            ans.add(current);
+
+            if (adj[current] != null) {
+                for (int next : adj[current]) {
+                    indegree[next]--;
+                    if (indegree[next] == 0) {
+                        queue.offer(next);
+                    }
+                }
+            }
+        }
+
+        return ans.size() == n;
     }
 }
